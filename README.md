@@ -1,7 +1,7 @@
 
 # XAdmin : Portable Telegram Shell
 
-```http
+```shell
   Compatible in Linux | Windows | Servers. 
 ```
 
