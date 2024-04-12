@@ -1,12 +1,12 @@
 import subprocess as s
 import os
+import requests as r
 from mss import mss
-import requests
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-# from google.colab import userdata
+from google.colab import userdata
 # import asyncio
 
-#This would show us that little animation while processing messages...
+#This would show us that the bot is typing...
 from functools import wraps
 
 def send_action(action):
@@ -20,43 +20,44 @@ def send_action(action):
 ###
 
 
-#IMPORTANT SEE HERE !!!
+
 # Define your Telegram bot token
-# TOKEN = userdata.get('XADMIN')
+TOKEN = userdata.get('XADMIN')
 
 # Define the command handlers
 @send_action('typing')
 def start(update, context):
     update.message.reply_html(f'''<pre class="spoiler">Hi {(update.effective_user.username).upper()}
-Type help for commands</pre>.
+Type help for commands</pre>
 ''')
 
 
 @send_action('record_video_note')
 def main(update, context):
   text : str = update.message.text
+
   if text.startswith('@'):
     file_name = text.replace("@","")
-    
+
+    if msg_handler(text) != str:
+      return context.bot.send_document(chat_id=update.effective_chat.id, document=msg_handler(text))
+
     #document send remotely
     if os.path.isfile(f"./{file_name}"):
       with open(file_name, 'rb') as f:
         return context.bot.send_document(chat_id=update.effective_chat.id, document=f)
-      
+
     else :
       return update.message.reply_html("<pre>the file does not exists</pre>")
-    
-  elif text.lower().startswith('ss') or text.lower().startswith('screenshot') :
-    with mss() as sct:
-      ss = sct.shot()
-      with open(ss, 'rb') as ss:
-        return context.bot.send_document(chat_id=update.effective_chat.id, document=ss)
 
-  elif text.lower().startswith('dir') or text.lower().startswith('ls') :
-     return update.message.reply_text(msg_handler(text))
-  
+  elif text.startswith("#"):
+    return update.message.reply_html(random_cmd())
+
   else:
-    return update.message.reply_html(msg_handler(text))
+    try:
+      return update.message.reply_html(msg_handler(text))
+    except Exception as e:
+      return update.message.reply_text(f"ERROR : {e}")
 
 
 #directory changer
@@ -82,44 +83,60 @@ def shell(inp : str) :
           return (f"ERROR : {out.stderr}")
 
 def get_ip():
-    ip_address = requests.get("https://api.ipify.org").text
+    ip_address = r.get("https://api.ipify.org").text
     return f"IP Address: {ip_address}"
 
 
+##--------------------------------------------##
+import random as rand
+from bs4 import BeautifulSoup as b
+
+def random_cmd():
+  res = r.get(r'https://www.computerhope.com/overview.htm')
+  soup = b(res.content)
+
+  #total 143 windows commands are there
+  fin = soup.find_all(class_= "tcw")
+
+  choice = rand.randint(0,143)
+  desc = fin[choice].text.split("\n")[2]
+  cmd = fin[choice].a.text
+
+  return (f"<b>{cmd}</b> : {desc}")
+
+##--------------------------------------------##
+
+
 def msg_handler(text : str):
-  if 'ip' in text:
+  if text == 'ip' :
     return get_ip()
-  elif 'help' in text.lower():
-    return '''
+  elif text.lower() == 'help':
+    return '''list of useful commands (case sensitive)
 
-windows <pre>systeminfo</pre>	linux <pre>uname -a</pre>	Shows detailed information about your system, including operating system version, hardware specifications, and network configuration (Windows) or kernel name, hostname, release, version, and machine architecture (Linux).
+Screenshot : <pre>ss or screenshot</pre>
 
+Remotely File Sharing : <pre>using @ before file_name(no spaces)</pre>
 
-windows <pre>dir</pre>	linux<pre>ls</pre>	Lists the contents of the current directory, including filenames and subdirectories.
+Random Windows Command : <pre>#</pre>
 
+IP Address Extraction : <pre>ip</pre>
 
-windows<pre>cd directory_name</pre>	 linux<pre>cd directory_name</pre>	Navigates to a specific directory within the file system. Use .. to move up one level in the directory structure.
+Support : https://github.com/xprabhudayal/xadmin?tab=readme-ov-file
 
-
-windows<pre>cls</pre>	 linux<pre>clear</pre>	Clears the contents of the terminal window (Windows) or the entire terminal screen (Linux).
-
-
-
-for taking Screenshot : use 
-<pre>ss or screenshot</pre> 
-
-for IP address : use 
-<pre>ip</pre> 
-
-for remotely downloading a file : use 
-<pre>@the_filename</pre> 
-<b>CASE SENSITIVE</b>
-
-for
   '''
-  
+  elif text.lower() == 'ss'  or  text.lower() == 'screenshot':
+    try:
+      with mss() as sct:
+        ss = sct.shot()
+        return
+    except Exception as e:
+      return e
   else :
-    return shell(text)
+    try:
+      return shell(text)
+    except Exception as e:
+      return e
+
 
 
 
@@ -139,6 +156,5 @@ dispatcher.add_handler(MessageHandler(Filters.text, main))
 dispatcher.add_handler(CommandHandler("ip", get_ip))
 
 # Start the Bot
-print("running...")
 updater.start_polling()
 updater.idle()
