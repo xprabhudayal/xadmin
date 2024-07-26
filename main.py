@@ -22,7 +22,7 @@ def app():
 
 
   # Define your Telegram bot token
-  TOKEN = '6666134996:AAHPINqP-9Y-xiSnTTbDAnay8E6ef2hrWyc'
+  TOKEN = #ENTER YOUR TOKEN HERE
 
 
 
