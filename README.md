@@ -20,7 +20,7 @@ Unlike 🔒 **SSH**, 💻 **Remote Desktop Connection**, or 📞 **Telnet** to c
 
 ## Installation
 
-[![steps-to-create-bot-in-telegram.png](https://i.postimg.cc/xCsNH9RT/steps-to-create-bot-in-telegram.png)](https://postimg.cc/ft9bQnp6)
+[![steps-to-create-bot-in-telegram.png](https://i.postimg.cc/Kjg98HZ8/steps-to-create-bot-in-telegram.png)](https://postimg.cc/fSD7H5tG)
 
 
 1. **Clone the Repository:**
