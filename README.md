@@ -1,6 +1,37 @@
 # 🚀 XAdmin: Remote Access Bot
 
 ⚠️Do not use it for hacking purposes without someone's permission elsewise i wouldn't be liable to the penalty you bear⚠️
+## Tutorials
+<table> 
+   <tr>
+   <td>
+      <div align='center'>
+      <h2>Youtube Video on the xAdmin ( Hindi + English )</h2>
+      <br>
+      <a href="https://www.youtube.com/watch?v=WWFra-7nBOY">
+      <img src="https://imgur.com/4pfmKu9.png" width='700'>
+      </a>
+      </div>
+      <br>
+      <div align='center'>
+   </td>
+<td>
+   <h2>English tutorials of xAdmin </h2>
+   <a href="https://www.linkedin.com/feed/update/urn:li:activity:7196088521957224449/">
+   <img src='https://static.vecteezy.com/system/resources/previews/017/339/624/original/linkedin-icon-free-png.png' width=100>
+   <H3>Linked-In Part 1</H3>
+   </a>
+   <a href="https://www.linkedin.com/feed/update/urn:li:activity:7199457151847714816/">
+   <hr>
+   <img src='https://static.vecteezy.com/system/resources/previews/017/339/624/original/linkedin-icon-free-png.png' width=100>
+   <H3>Linked-In Part 2</H3>
+   </a>
+   </div>
+</td>
+</tr>
+
+</table>
+
 ## Overview 
 
 XAdmin is a Telegram Bot designed to provide remote shell access to a host PC. 
